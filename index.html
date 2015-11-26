@@ -1,0 +1,304 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>GitHub Pages instructions</title>
+
+  <style type="text/css">
+    body {
+      font: medium/1.2 sans-serif;
+      color: #333;
+      margin: 2em;
+    }
+
+    #mode-selector {
+      list-style: none;
+      padding-left: 0;
+    }
+    #mode-selector > li {
+      border: 1px solid silver;
+      border-bottom-width: 0;
+      background: ghostwhite;
+      padding: .5em 1em;
+    }
+    #mode-selector > li:first-child {
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+    }
+    #mode-selector > li:last-child {
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+      border-bottom-width: 1px;
+    }
+    #mode-selector > li .fields {
+      display: none;
+    }
+    #mode-selector > li.selected .fields {
+      display: block;
+    }
+    .fields input {
+      margin-left: .2em;
+    }
+
+    .only-github, .only-custom, .only-apex, .only-subdomain, .only-www {
+      display: none;
+    }
+    .mode-github .only-github,
+    .mode-custom .only-custom { display: block }
+    .mode-apex .only-apex,
+    .mode-subdomain .only-subdomain,
+    .mode-www .only-www { display: list-item }
+    .instructions h2 {
+      font-weight: normal;
+    }
+    .instructions code {
+      font: 1em Menlo, Courier New, Courier, monospace;
+      font-weight: bold;
+      background: ghostwhite;
+      border: 1px solid #eee;
+      border-radius: 3px;
+      padding: 1px 2px;
+    }
+  </style>
+</head>
+
+<h1>So you want to make a site with GitHub</h1>
+
+<p>Tell me where you want to publish it, and I'll give you the instructions:</p>
+
+<ol id="mode-selector">
+  <li>
+    <p>
+    <label>
+      <input type="radio" name="type" value="updateForGithub" checked>
+      On <strong>github.io</strong>
+    </label>
+    </p>
+    <p class="fields">
+    Site location:
+    <span class="input">
+      <input id="username" value="GITHUB-USERNAME">.github.io/<input id="project" placeholder="(optional path)">
+    </span>
+    </p>
+  </li>
+
+  <li>
+    <p>
+    <label>
+      <input type="radio" name="type" value="updateForCustom">
+      On my own domain name
+    </label>
+    </p>
+    <p class="fields">
+    Site location:
+    <span class="input">
+      <input id="domain" placeholder="example.com">
+    </span>
+    </p>
+  </li>
+</ol>
+
+<div class="instructions only-github" id="github">
+  <h2>To publish a site on <strong class="location"></strong>, you will need to:</h2>
+  <ol>
+    <li>
+      <p>
+      Create a GitHub repository with the name <code class="repo-name"></code>;
+      </p>
+    </li>
+    <li>
+      <p>
+      Push the site contents to the <code class="branch-name">master</code> branch of that repository.
+      </p>
+    </li>
+  </ol>
+</div>
+
+<div class="instructions only-custom" id="custom">
+  <h2>To publish a site on <strong class="location"></strong>, you will need to:</h2>
+  <ol>
+    <li>
+      <p>
+      Own the <code class="apex-domain-name"></code> domain name;
+      </p>
+    </li>
+    <li class="only-apex">
+      <p>
+      Using your DNS provider, do one of the following to connect <code class="apex-domain-name"></code> to GitHub:
+      </p>
+      <ul>
+        <li>
+          <p>
+          If your DNS provider supports it, create an <code>ALIAS</code> or <code>ANAME</code> record for <code class="apex-domain-name"></code> and map it to <code>username.github.io</code>.
+          </p>
+        </li>
+        <li>
+          <p>
+          Otherwise, create two <code>A</code> records for <code class="apex-domain-name"></code> and map them to these IPs:
+          </p>
+          <ol>
+            <li><code>192.30.252.153</code></li>
+            <li><code>192.30.252.154</code></li>
+          </ol>
+        </li>
+      </ul>
+    </li>
+    <li class="only-apex">
+      <p>
+      (Optional) You should also allow people to reach your site at <code>www.<span class="apex-domain-name"></span></code>.
+      To enable that, do the following using your DNS provider:
+      </p>
+      <ul>
+        <li>
+          <p>
+          Create a <code>CNAME</code> record for <code>www</code> and map it to <code class="apex-domain-name"></code>.
+          </p>
+        </li>
+      </ul>
+    </li>
+    <li class="only-www">
+      <p>
+      (Optional) If your DNS provider supports creating <code>ALIAS</code> or <code>ANAME</code> records,
+      consider hosting your site at <code class="apex-domain-name"></code> (without the <code>www</code> subdomain).
+      This will make it easier to type your domain name in their browser's URL bar.
+      </p>
+    </li>
+    <li class="only-subdomain">
+      <p>
+      Using your DNS provider, create a <code>CNAME</code> record for <code class="domain-name"></code> and map it to <code>username.github.io</code>;
+      </p>
+    </li>
+    <li>
+      <p>
+      Create a GitHub repository under your GitHub account;
+      </p>
+    </li>
+    <li>
+      <p>
+      Push the site contents to the <code class="branch-name">gh-pages</code> branch of that repository.
+      </p>
+    </li>
+    <li>
+      <p>
+      Add a <code>CNAME</code> file in that repository with this content: <code class="domain-name"></code>.
+      </p>
+    </li>
+  </ol>
+</div>
+
+<script>
+function id(name) {
+  return document.getElementById(name.slice(1))
+}
+
+function forEach(list, fn) {
+  for (var i = 0; i < list.length; i++) {
+    if (fn(list[i], i) === false) break
+  }
+}
+
+function matches(el, selector) {
+  return el.matches(selector)
+}
+
+function closest(el, selector) {
+  while (el && !matches(el, selector)) el = el.parentNode
+  return el
+}
+
+function mode(el, classname) {
+  var toRemove = []
+  el.classList.forEach(function(name) {
+    if (/^mode-/.test(name) && name != classname) toRemove.push(name)
+  })
+  toRemove.forEach(function(name) {
+    el.classList.remove(name)
+  })
+  el.classList.add(classname)
+}
+
+function update(_, hash) {
+  if (hash) {
+    var value = hash.slice(1)
+    if (/\bgithub\.io\b/.test(value)) {
+      var parts = value.split("/", 2)
+      id("#username").value = parts[0].replace(".github.io", "")
+      id("#project").value = parts[1] || ""
+      document.querySelector("input[name=type][value=updateForGithub]").checked = true
+    } else {
+      id("#domain").value = value
+      document.querySelector("input[name=type][value=updateForCustom]").checked = true
+    }
+  }
+
+  forEach(document.querySelectorAll("input[name=type]"), function(radio) {
+    var item = closest(radio, "li")
+    item.classList.toggle("selected", radio.checked)
+    if (radio.checked) window[radio.value]()
+  })
+}
+
+function replaceState(hash) {
+  if (window.location.protocol == "file:") {
+    window.location.hash = hash
+  } else {
+    window.history.replaceState(null, "", "#" + hash)
+  }
+}
+
+function updateForGithub() {
+  mode(document.body, "mode-github")
+
+  var username = id("#username").value
+  var project = id("#project").value
+  var location = username + ".github.io"
+  if (project) location += "/" + project + "/"
+  replaceState(location)
+  location = "http://" + location
+
+  var container = id("#github")
+  container.querySelector(".location").textContent = location
+  if (project) {
+    container.querySelector(".repo-name").textContent = project
+    container.querySelector(".branch-name").textContent = "gh-pages"
+  } else {
+    container.querySelector(".repo-name").textContent = username + ".github.io"
+    container.querySelector(".branch-name").textContent = "master"
+  }
+}
+
+function updateForCustom() {
+  mode(document.body, "mode-custom")
+  var domainField = id("#domain")
+  var domain = domainField.value
+  replaceState(domain || domainField.getAttribute("placeholder"))
+  var location = "http://" + domain
+
+  var domainParts = domain.split(".")
+  // TODO: https://en.wikipedia.org/wiki/Second-level_domain
+  while (domainParts.length > 2) domainParts.shift()
+  var apexDomain = domainParts.join(".")
+
+  var container = id("#custom")
+  mode(container, apexDomain == domain ? "mode-apex" : "mode-subdomain")
+  if (domain == "www." + apexDomain) {
+    container.classList.add("mode-www")
+  }
+
+  container.querySelector(".location").textContent = location
+  forEach(container.querySelectorAll(".domain-name"), function(el) {
+    el.textContent = domain
+  })
+  forEach(container.querySelectorAll(".apex-domain-name"), function(el) {
+    el.textContent = apexDomain
+  })
+}
+
+document.addEventListener("change", update, false)
+document.addEventListener("input", update, false)
+
+document.addEventListener("focusin", function(event) {
+  if (event.target.type == "text") event.target.select()
+}, false)
+
+update(null, window.location.hash)
+</script>
