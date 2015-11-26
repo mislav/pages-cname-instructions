@@ -269,8 +269,8 @@ function updateForGithub() {
 function updateForCustom() {
   mode(document.body, "mode-custom")
   var domainField = id("#domain")
-  var domain = domainField.value
-  replaceState(domain || domainField.getAttribute("placeholder"))
+  var domain = domainField.value || domainField.getAttribute("placeholder")
+  replaceState(domain)
   var location = "http://" + domain
 
   var domainParts = domain.split(".")
