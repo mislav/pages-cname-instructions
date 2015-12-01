@@ -3,6 +3,7 @@ function id(name) {
 }
 
 function forEach(list, fn) {
+  if (typeof list.forEach == "function") return list.forEach(fn)
   for (var i = 0; i < list.length; i++) {
     if (fn(list[i], i) === false) break
   }
@@ -19,10 +20,10 @@ function closest(el, selector) {
 
 function mode(el, classname) {
   var toRemove = []
-  el.classList.forEach(function(name) {
+  forEach(el.classList, function(name) {
     if (/^mode-/.test(name) && name != classname) toRemove.push(name)
   })
-  toRemove.forEach(function(name) {
+  forEach(toRemove, function(name) {
     el.classList.remove(name)
   })
   el.classList.add(classname)
