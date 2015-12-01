@@ -1,0 +1,57 @@
+body {
+  font: medium/1.2 sans-serif;
+  color: #333;
+  margin: 2em;
+}
+
+#mode-selector {
+  list-style: none;
+  padding-left: 0;
+}
+#mode-selector > li {
+  border: 1px solid silver;
+  border-bottom-width: 0;
+  background: ghostwhite;
+  padding: .5em 1em;
+}
+#mode-selector > li:first-child {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+#mode-selector > li:last-child {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border-bottom-width: 1px;
+}
+#mode-selector > li .fields {
+  display: none;
+}
+#mode-selector > li.selected .fields {
+  display: block;
+}
+.fields input {
+  margin-left: .2em;
+}
+
+.only-github, .only-custom, .only-apex, .only-subdomain, .only-www {
+  display: none;
+}
+.mode-github .only-github,
+.mode-custom .only-custom { display: block }
+.mode-apex .only-apex,
+.mode-subdomain .only-subdomain,
+.mode-www .only-www { display: list-item }
+
+.instructions h2 {
+  font-weight: normal;
+}
+
+.instructions code {
+  font: 1em Menlo, Courier New, Courier, monospace;
+  font-weight: bold;
+  background: ghostwhite;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  padding: 1px 2px;
+}
+
